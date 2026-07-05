@@ -6,7 +6,7 @@ namespace ForgottenFort.Core
         public const int ViewportWidthTiles = 18;
         public const int ViewportHeightTiles = 10;
         public const int TotalKeysRequired = 3;
-        public const int MosaicFragmentsRequired = 3;
+        public const int MosaicFragmentsRequired = 1;
         public const int MaxHealth = 100;
         public const int GuardHitDamage = 15;
         public const float PlayerInvulnerabilitySeconds = 1.25f;

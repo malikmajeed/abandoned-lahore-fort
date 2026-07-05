@@ -97,7 +97,7 @@ namespace ForgottenFort.Level
         {
             if (UsingJson)
             {
-                if (y < 0 || y >= Height || x < 0 || x >= Width) return '#';
+                if (y < 0 || y >= Height || x < 0 || x >= Width) return ' ';
                 return FortLevelJsonLoader.Grid[y, x];
             }
             if (y < 0 || y >= FallbackMapRows.Length || x < 0 || x >= FallbackMapRows[y].Length)
@@ -107,16 +107,18 @@ namespace ForgottenFort.Level
 
         public static bool IsWall(int x, int y) => GetTile(x, y) == '#';
 
+        public static bool IsVoid(int x, int y) => GetTile(x, y) == ' ';
+
         public static bool IsWalkable(int x, int y)
         {
             char t = GetTile(x, y);
-            return t != '#' && t != 'B';
+            return t != '#' && t != 'B' && t != ' ';
         }
 
         public static bool BlocksMovement(int x, int y)
         {
             char t = GetTile(x, y);
-            return t == '#' || t == 'B';
+            return t == '#' || t == 'B' || t == ' ';
         }
 
         public static bool IsBarrelTile(int x, int y) => GetTile(x, y) == 'B';

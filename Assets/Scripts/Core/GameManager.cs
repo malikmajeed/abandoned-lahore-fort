@@ -63,6 +63,12 @@ namespace ForgottenFort.Core
                 PuzzleSolved = true;
         }
 
+        public void SolvePuzzle()
+        {
+            PuzzleSolved = true;
+            OnInventoryChanged?.Invoke();
+        }
+
         public bool TryConsumeKeyForDoor()
         {
             if (KeysCollected <= 0) return false;

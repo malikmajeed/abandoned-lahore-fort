@@ -17,6 +17,7 @@ namespace ForgottenFort.Interactables
         {
             if (!other.GetComponent<Player.PlayerController>()) return;
             GameManager.Instance?.CollectMosaicFragment();
+            GameManager.Instance?.SolvePuzzle();
             Destroy(gameObject);
         }
     }

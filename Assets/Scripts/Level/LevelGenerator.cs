@@ -154,13 +154,25 @@ namespace ForgottenFort.Level
             EnsureTrigger(go, 0.35f);
         }
 
-        static void EnsureChest(GameObject go, bool royal)
+        static void EnsureChest(GameObject go, bool royal, bool requiresPuzzle)
         {
             FitToTile(go, 0.85f);
             SetSort(go, 12);
             var chest = go.GetComponent<TreasureChest>() ?? go.AddComponent<TreasureChest>();
             chest.IsRoyalSeal = royal;
-            EnsureTrigger(go, 0.4f);
+            chest.RequiresPuzzle = requiresPuzzle;
+
+            var box = go.GetComponent<BoxCollider2D>();
+            if (box != null)
+            {
+                box.isTrigger = true;
+                if (box.size.x > 1.5f)
+                    box.size = Vector2.one * 0.85f;
+            }
+            else
+            {
+                EnsureTrigger(go, 0.45f);
+            }
         }
 
         void EnsureDoor(GameObject go, string doorId, int doorIndex)
@@ -171,9 +183,17 @@ namespace ForgottenFort.Level
             door.DoorId = doorId;
             door.DoorIndex = doorIndex;
             door.OpenDoorPrefab = doorOpenPrefab;
+
+            var doorData = FortLevelJsonLoader.GetDoor(doorIndex);
+            if (doorData != null)
+                door.IsLocked = doorData.locked;
+
             var sr = go.GetComponent<SpriteRenderer>();
             if (sr != null && door.LockedSprite == null)
                 door.LockedSprite = sr.sprite;
+            if (doorData != null && doorData.locked && sr != null)
+                sr.color = new Color(1f, 0.55f, 0.55f);
+
             var col = go.GetComponent<BoxCollider2D>() ?? go.AddComponent<BoxCollider2D>();
             col.isTrigger = true;
             col.size = Vector2.one * 0.92f;
@@ -189,7 +209,6 @@ namespace ForgottenFort.Level
         void GenerateFromFortMap()
         {
             int keyIndex = 0;
-            int mosaicIndex = 0;
             int doorIndex = 0;
 
             for (int y = 0; y < FortLevelData.Height; y++)
@@ -197,6 +216,8 @@ namespace ForgottenFort.Level
                 for (int x = 0; x < FortLevelData.Width; x++)
                 {
                     char tile = FortLevelData.GetTile(x, y);
+                    if (tile == ' ') continue;
+
                     Vector3 pos = FortLevelData.GridToWorld(x, y);
 
                     if (tile == '#')
@@ -229,19 +250,13 @@ namespace ForgottenFort.Level
                             doorIndex++;
                             break;
                         case 'M':
-                            if (mosaicIndex < GameConstants.MosaicFragmentsRequired)
-                            {
-                                var mosaic = PrefabFactory.Spawn(mosaicPrefab, pos, objectsRoot);
-                                FitToTile(mosaic, 0.65f);
-                                SetSort(mosaic, 12);
-                                if (mosaic.GetComponent<MosaicFragment>() == null)
-                                    mosaic.AddComponent<MosaicFragment>();
-                                EnsureTrigger(mosaic, 0.35f);
-                                mosaicIndex++;
-                            }
+                            SpawnPuzzle(pos);
                             break;
                         case 'X':
-                            SpawnChest(pos, true);
+                        case 'C':
+                            SpawnChest(pos, tile == 'X', ChestRequiresPuzzle(tile == 'X'));
+                            break;
+                        case 'E':
                             break;
                     }
                 }
@@ -303,10 +318,31 @@ namespace ForgottenFort.Level
             EnsureDoor(go, doorId, doorIndex);
         }
 
-        void SpawnChest(Vector3 pos, bool isRoyal)
+        void SpawnPuzzle(Vector3 pos)
+        {
+            var mosaic = PrefabFactory.Spawn(mosaicPrefab, pos, objectsRoot);
+            FitToTile(mosaic, 0.65f);
+            SetSort(mosaic, 12);
+            if (mosaic.GetComponent<MosaicFragment>() == null)
+                mosaic.AddComponent<MosaicFragment>();
+            EnsureTrigger(mosaic, 0.35f);
+        }
+
+        static bool ChestRequiresPuzzle(bool isRoyalChest)
+        {
+            if (!FortLevelJsonLoader.IsLoaded || FortLevelJsonLoader.Data?.chests == null)
+                return isRoyalChest;
+
+            foreach (var chest in FortLevelJsonLoader.Data.chests)
+                if (chest.requiresPuzzle)
+                    return true;
+            return false;
+        }
+
+        void SpawnChest(Vector3 pos, bool isRoyal, bool requiresPuzzle)
         {
             var go = PrefabFactory.Spawn(treasurePrefab, pos, objectsRoot);
-            EnsureChest(go, isRoyal);
+            EnsureChest(go, isRoyal, requiresPuzzle);
         }
 
         void SpawnCharacters()
@@ -323,12 +359,10 @@ namespace ForgottenFort.Level
                     var guardGo = PrefabFactory.Spawn(guardPrefab, FortLevelData.GridToWorld(g.x, g.y), objectsRoot);
                     EnsureGuard(guardGo);
                     var guard = guardGo.GetComponent<GuardAI>();
-                    if (guard == null || g.patrolX == null || g.patrolY == null) continue;
+                    if (guard == null || g.patrol == null || g.patrol.Length == 0) continue;
                     var points = new List<Vector3>();
-                    for (int i = 0; i < g.patrolX.Length && i < g.patrolY.Length; i++)
-                        points.Add(FortLevelData.GridToWorld(g.patrolX[i], g.patrolY[i]));
-                    if (points.Count == 0)
-                        points.Add(FortLevelData.GridToWorld(g.x, g.y));
+                    foreach (var wp in g.patrol)
+                        points.Add(FortLevelData.GridToWorld(wp.x, wp.y));
                     guard.PatrolWorldPoints = points.ToArray();
                 }
                 return;

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using ForgottenFort.Core;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace ForgottenFort.Level
@@ -8,46 +8,72 @@ namespace ForgottenFort.Level
     [Serializable]
     public class LevelJsonData
     {
+        public int tileSize;
         public int gridWidth;
         public int gridHeight;
         public LevelStartJson start;
         public LevelRoomJson[] rooms;
         public LevelCorridorJson[] corridors;
+        public LevelPointJson[] mazeBlocks;
         public LevelDoorJson[] doors;
         public LevelKeyJson[] keys;
         public LevelChestJson[] chests;
         public LevelGuardJson[] guards;
         public LevelBarrelJson[] decor_barrels;
-        public LevelMazeWallJson[] mazeWalls;
         public LevelPuzzleJson puzzle;
+        public LevelExitJson[] exits;
     }
 
     [Serializable] public class LevelStartJson { public int x, y; public string room; }
-    [Serializable] public class LevelRoomJson { public string id, name; public int x, y, w, h; }
-    [Serializable] public class LevelCorridorJson { public string from, to; public int[] pathX, pathY; }
+    [Serializable] public class LevelRoomJson { public string id, name; public int x, y, w, h; public bool guard; }
+    [Serializable] public class LevelCorridorJson { public string id; public int[] pathX, pathY; }
+    [Serializable] public class LevelPointJson { public int x, y; }
     [Serializable] public class LevelDoorJson { public string id; public int x, y; public string orientation, keyId, leadsFrom, leadsTo; public bool locked; }
     [Serializable] public class LevelKeyJson { public string id, unlocks, room; public int x, y; }
     [Serializable] public class LevelChestJson { public string id, room, loot; public int x, y; public bool requiresPuzzle; }
-    [Serializable] public class LevelGuardJson { public string id, room; public int x, y; public int[] patrolX, patrolY; }
+    [Serializable] public class LevelGuardJson { public string id, room; public int x, y; public Vector2Int[] patrol; }
     [Serializable] public class LevelBarrelJson { public int x, y; public string room; }
-    [Serializable] public class LevelMazeWallJson { public int x1, y1, x2, y2, gapX; public int gapY; }
     [Serializable] public class LevelPuzzleJson { public string id, room, type, unlocksChest; public int x, y; }
+    [Serializable] public class LevelExitJson { public string id, leadsTo; public int x, y; }
 
     /// <summary>
-    /// Builds the playable grid from Assets/Resources/level.json.
+    /// Builds the playable grid from Assets/Resources/level.json using computed 1-tile walls.
+    /// Floor = room interiors + door tiles. Wall = orthogonal neighbors of floor not in floor.
     /// </summary>
     public static class FortLevelJsonLoader
     {
         public static LevelJsonData Data { get; private set; }
         public static char[,] Grid { get; private set; }
         public static bool IsLoaded { get; private set; }
+        public static int TileSizePixels { get; private set; } = 64;
 
+        public static readonly HashSet<Vector2Int> FloorTiles = new();
+        public static readonly HashSet<Vector2Int> WallTiles = new();
         public static readonly List<LevelGuardJson> Guards = new();
         public static readonly List<string> DoorIdsInOrder = new();
+        public static readonly List<LevelDoorJson> DoorsInOrder = new();
+
+        static readonly Vector2Int[] OrthoDirs =
+        {
+            Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down
+        };
+
+        public static void ResetForReload()
+        {
+            IsLoaded = false;
+            Data = null;
+            Grid = null;
+            FloorTiles.Clear();
+            WallTiles.Clear();
+            Guards.Clear();
+            DoorIdsInOrder.Clear();
+            DoorsInOrder.Clear();
+        }
 
         public static void EnsureLoaded()
         {
             if (IsLoaded) return;
+
             var asset = Resources.Load<TextAsset>("level");
             if (asset == null)
             {
@@ -62,10 +88,90 @@ namespace ForgottenFort.Level
                 return;
             }
 
+            TileSizePixels = Data.tileSize > 0 ? Data.tileSize : 64;
+            AttachGuardPatrols(asset.text, Data.guards);
+            ComputeFloorAndWalls(Data);
             Grid = BuildGrid(Data);
             IsLoaded = true;
-            Debug.Log($"FortLevelJsonLoader: loaded {Data.gridWidth}x{Data.gridHeight} maze " +
-                      $"({Data.rooms?.Length ?? 0} rooms, {Data.doors?.Length ?? 0} doors, {Guards.Count} guards).");
+
+            Debug.Log($"FortLevelJsonLoader: loaded {Data.gridWidth}x{Data.gridHeight} " +
+                      $"({FloorTiles.Count} floor, {WallTiles.Count} wall, {DoorsInOrder.Count} doors, {Guards.Count} guards).");
+        }
+
+        public static LevelDoorJson GetDoor(int doorIndex)
+        {
+            if (doorIndex >= 0 && doorIndex < DoorsInOrder.Count)
+                return DoorsInOrder[doorIndex];
+            return null;
+        }
+
+        static void AttachGuardPatrols(string json, LevelGuardJson[] guards)
+        {
+            if (guards == null) return;
+
+            var patrolMatches = Regex.Matches(
+                json,
+                "\"patrol\"\\s*:\\s*\\[((?:\\s*\\[\\s*\\d+\\s*,\\s*\\d+\\s*\\]\\s*,?\\s*)+)\\]",
+                RegexOptions.Singleline);
+
+            int i = 0;
+            foreach (Match block in patrolMatches)
+            {
+                if (i >= guards.Length) break;
+                var points = new List<Vector2Int>();
+                foreach (Match pt in Regex.Matches(block.Groups[1].Value, "\\[\\s*(\\d+)\\s*,\\s*(\\d+)\\s*\\]"))
+                    points.Add(new Vector2Int(int.Parse(pt.Groups[1].Value), int.Parse(pt.Groups[2].Value)));
+                guards[i].patrol = points.ToArray();
+                i++;
+            }
+        }
+
+        static void ComputeFloorAndWalls(LevelJsonData data)
+        {
+            FloorTiles.Clear();
+            WallTiles.Clear();
+
+            if (data.rooms != null)
+            {
+                foreach (var room in data.rooms)
+                {
+                    for (int y = room.y; y < room.y + room.h; y++)
+                    for (int x = room.x; x < room.x + room.w; x++)
+                        FloorTiles.Add(new Vector2Int(x, y));
+                }
+            }
+
+            if (data.doors != null)
+            {
+                foreach (var door in data.doors)
+                    FloorTiles.Add(new Vector2Int(door.x, door.y));
+            }
+
+            if (data.corridors != null)
+            {
+                foreach (var corridor in data.corridors)
+                {
+                    if (corridor.pathX == null || corridor.pathY == null) continue;
+                    for (int i = 0; i < corridor.pathX.Length && i < corridor.pathY.Length; i++)
+                        FloorTiles.Add(new Vector2Int(corridor.pathX[i], corridor.pathY[i]));
+                }
+            }
+
+            if (data.mazeBlocks != null)
+            {
+                foreach (var block in data.mazeBlocks)
+                    FloorTiles.Remove(new Vector2Int(block.x, block.y));
+            }
+
+            foreach (var floor in FloorTiles)
+            {
+                foreach (var dir in OrthoDirs)
+                {
+                    var neighbor = floor + dir;
+                    if (!FloorTiles.Contains(neighbor))
+                        WallTiles.Add(neighbor);
+                }
+            }
         }
 
         static char[,] BuildGrid(LevelJsonData data)
@@ -74,33 +180,30 @@ namespace ForgottenFort.Level
             var g = new char[h, w];
             for (int y = 0; y < h; y++)
             for (int x = 0; x < w; x++)
-                g[y, x] = '#';
+                g[y, x] = ' ';
 
-            if (data.rooms != null)
-                foreach (var room in data.rooms)
-                    CarveRect(g, w, h, room.x, room.y, room.w, room.h);
+            foreach (var wall in WallTiles)
+                if (InBounds(g, w, h, wall.x, wall.y))
+                    g[wall.y, wall.x] = '#';
 
-            if (data.corridors != null)
-                foreach (var corridor in data.corridors)
-                {
-                    if (corridor.pathX == null || corridor.pathY == null) continue;
-                    for (int i = 0; i < corridor.pathX.Length && i < corridor.pathY.Length; i++)
-                        CarveBrush(g, w, h, corridor.pathX[i], corridor.pathY[i]);
-                }
-
-            if (data.mazeWalls != null)
-                foreach (var wall in data.mazeWalls)
-                    ApplyMazeWall(g, w, h, wall);
-
-            PlaceChar(g, w, h, data.start.x, data.start.y, 'S');
+            foreach (var floor in FloorTiles)
+                if (InBounds(g, w, h, floor.x, floor.y))
+                    g[floor.y, floor.x] = '.';
 
             DoorIdsInOrder.Clear();
+            DoorsInOrder.Clear();
             if (data.doors != null)
+            {
                 foreach (var door in data.doors)
                 {
                     PlaceChar(g, w, h, door.x, door.y, 'D');
                     DoorIdsInOrder.Add(door.id);
+                    DoorsInOrder.Add(door);
                 }
+            }
+
+            if (data.start != null)
+                PlaceChar(g, w, h, data.start.x, data.start.y, 'S');
 
             if (data.keys != null)
                 foreach (var key in data.keys)
@@ -112,17 +215,14 @@ namespace ForgottenFort.Level
 
             if (data.chests != null)
                 foreach (var chest in data.chests)
-                {
-                    char mark = chest.requiresPuzzle || chest.loot == "final_treasure" ? 'X' : 'C';
-                    PlaceChar(g, w, h, chest.x, chest.y, mark);
-                }
+                    PlaceChar(g, w, h, chest.x, chest.y, chest.requiresPuzzle ? 'X' : 'C');
 
             if (data.puzzle != null)
-            {
                 PlaceChar(g, w, h, data.puzzle.x, data.puzzle.y, 'M');
-                PlaceChar(g, w, h, data.puzzle.x + 1, data.puzzle.y, 'M');
-                PlaceChar(g, w, h, data.puzzle.x, data.puzzle.y + 1, 'M');
-            }
+
+            if (data.exits != null)
+                foreach (var exit in data.exits)
+                    PlaceChar(g, w, h, exit.x, exit.y, 'E');
 
             Guards.Clear();
             if (data.guards != null)
@@ -131,48 +231,11 @@ namespace ForgottenFort.Level
             return g;
         }
 
-        static void CarveRect(char[,] g, int w, int h, int x, int y, int rw, int rh)
-        {
-            for (int dy = 0; dy < rh; dy++)
-            for (int dx = 0; dx < rw; dx++)
-                SetWalkable(g, w, h, x + dx, y + dy);
-        }
-
-        static void CarveBrush(char[,] g, int w, int h, int cx, int cy)
-        {
-            for (int dy = -1; dy <= 1; dy++)
-            for (int dx = -1; dx <= 1; dx++)
-                SetWalkable(g, w, h, cx + dx, cy + dy);
-        }
-
-        static void ApplyMazeWall(char[,] g, int w, int h, LevelMazeWallJson wall)
-        {
-            int x1 = Mathf.Min(wall.x1, wall.x2);
-            int x2 = Mathf.Max(wall.x1, wall.x2);
-            int y1 = Mathf.Min(wall.y1, wall.y2);
-            int y2 = Mathf.Max(wall.y1, wall.y2);
-
-            for (int y = y1; y <= y2; y++)
-            for (int x = x1; x <= x2; x++)
-            {
-                if (wall.gapY > 0 && x == wall.gapX && y == wall.gapY) continue;
-                if (wall.gapY <= 0 && y1 == y2 && x == wall.gapX) continue;
-                if (InBounds(g, w, h, x, y) && g[y, x] == '.')
-                    g[y, x] = '#';
-            }
-        }
-
         static void PlaceChar(char[,] g, int w, int h, int x, int y, char c)
         {
             if (!InBounds(g, w, h, x, y)) return;
             if (g[y, x] == '#') return;
             g[y, x] = c;
-        }
-
-        static void SetWalkable(char[,] g, int w, int h, int x, int y)
-        {
-            if (InBounds(g, w, h, x, y))
-                g[y, x] = '.';
         }
 
         static bool InBounds(char[,] g, int w, int h, int x, int y) =>

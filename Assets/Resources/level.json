@@ -1,633 +1,161 @@
 {
-  "tileSize": 32,
-  "gridWidth": 50,
-  "gridHeight": 76,
+  "tileSize": 64,
+  "gridWidth": 42,
+  "gridHeight": 50,
   "start": {
-    "x": 32,
-    "y": 4,
-    "room": "guard_station"
+    "x": 7,
+    "y": 7,
+    "room": "entry_hall"
   },
   "rooms": [
     {
-      "id": "akbari_mahal",
-      "name": "Akbari Mahal",
-      "x": 6,
-      "y": 2,
-      "w": 16,
-      "h": 7
+      "id": "entry_hall",
+      "name": "Entry Hall",
+      "x": 4,
+      "y": 4,
+      "w": 7,
+      "h": 6,
+      "guard": false
     },
     {
-      "id": "guard_station",
-      "name": "Guard Station",
-      "x": 30,
-      "y": 2,
-      "w": 10,
-      "h": 5
+      "id": "guard_room",
+      "name": "Guard Room",
+      "x": 3,
+      "y": 14,
+      "w": 9,
+      "h": 8,
+      "guard": true
     },
     {
-      "id": "tosha_khana",
-      "name": "Tosha Khana",
-      "x": 40,
-      "y": 2,
-      "w": 8,
-      "h": 28
-    },
-    {
-      "id": "khwab_gah",
-      "name": "Khwab Gah (courtyard)",
-      "x": 6,
-      "y": 12,
-      "w": 10,
-      "h": 10
-    },
-    {
-      "id": "pool_chambers",
-      "name": "Small Pool Chambers",
+      "id": "key_vault_a",
+      "name": "Key Vault A",
       "x": 18,
-      "y": 10,
-      "w": 4,
-      "h": 12
-    },
-    {
-      "id": "diwan_i_am",
-      "name": "Diwan-i-Am",
-      "x": 24,
       "y": 12,
-      "w": 8,
-      "h": 10
+      "w": 5,
+      "h": 5,
+      "guard": false
     },
     {
-      "id": "tank",
-      "name": "Tank",
-      "x": 32,
-      "y": 15,
-      "w": 4,
-      "h": 3
-    },
-    {
-      "id": "hall_a",
-      "name": "Hall A",
-      "x": 18,
-      "y": 22,
-      "w": 6,
-      "h": 4
+      "id": "locked_room",
+      "name": "Locked Room",
+      "x": 3,
+      "y": 26,
+      "w": 9,
+      "h": 7,
+      "guard": false
     },
     {
       "id": "hall_b",
       "name": "Hall B",
-      "x": 18,
-      "y": 27,
-      "w": 6,
-      "h": 4
+      "x": 17,
+      "y": 26,
+      "w": 9,
+      "h": 7,
+      "guard": true
     },
     {
-      "id": "khwar_gah",
-      "name": "Khwar Gah (courtyard)",
-      "x": 6,
-      "y": 27,
-      "w": 10,
-      "h": 8
-    },
-    {
-      "id": "arz_gan",
-      "name": "Arz Gan (entrance corridor)",
-      "x": 2,
-      "y": 29,
-      "w": 4,
-      "h": 2
-    },
-    {
-      "id": "khilat_khana",
-      "name": "Khilat Khana (Marble Pavilion)",
-      "x": 6,
-      "y": 35,
+      "id": "key_vault_b",
+      "name": "Key Vault B",
+      "x": 29,
+      "y": 26,
       "w": 7,
-      "h": 4
+      "h": 7,
+      "guard": false
     },
     {
-      "id": "mosque_wells",
-      "name": "Mosque / Wells",
-      "x": 6,
-      "y": 39,
-      "w": 5,
-      "h": 3
-    },
-    {
-      "id": "moti_masjid",
-      "name": "Moti Masjid",
-      "x": 18,
-      "y": 31,
-      "w": 8,
-      "h": 7
-    },
-    {
-      "id": "stables",
-      "name": "Stables",
-      "x": 32,
-      "y": 27,
-      "w": 14,
-      "h": 13
-    },
-    {
-      "id": "cook_houses",
-      "name": "Cook Houses",
-      "x": 24,
-      "y": 36,
-      "w": 6,
-      "h": 4
-    },
-    {
-      "id": "garden",
-      "name": "Garden",
-      "x": 12,
-      "y": 40,
-      "w": 12,
-      "h": 8
-    },
-    {
-      "id": "shish_mahal",
-      "name": "Musamman Burj / Shish Mahal",
-      "x": 6,
-      "y": 46,
-      "w": 6,
-      "h": 5
-    },
-    {
-      "id": "hazuri_bagh",
-      "name": "Hazuri Bagh (outer garden)",
-      "x": 6,
-      "y": 54,
-      "w": 34,
-      "h": 20
-    },
-    {
-      "id": "ranjit_samadhi",
-      "name": "Ranjit Singh's Samadhi (puzzle room)",
-      "x": 18,
-      "y": 62,
-      "w": 6,
-      "h": 4
-    },
-    {
-      "id": "storage_cell",
-      "name": "Storage Cell",
-      "x": 2,
-      "y": 14,
-      "w": 3,
-      "h": 5
-    },
-    {
-      "id": "diamond_room",
-      "name": "Diamond Room",
-      "x": 34,
-      "y": 12,
-      "w": 5,
-      "h": 4
-    },
-    {
-      "id": "armory",
-      "name": "Armory",
-      "x": 28,
-      "y": 22,
-      "w": 5,
-      "h": 5
-    },
-    {
-      "id": "prison_cell",
-      "name": "Prison Cell",
-      "x": 44,
-      "y": 24,
-      "w": 4,
-      "h": 6
-    },
-    {
-      "id": "servants_quarters",
-      "name": "Servants Quarters",
-      "x": 32,
-      "y": 40,
-      "w": 6,
-      "h": 5
-    },
-    {
-      "id": "well_room",
-      "name": "Well Room",
-      "x": 2,
-      "y": 42,
-      "w": 4,
-      "h": 4
-    },
-    {
-      "id": "treasury_nook",
-      "name": "Treasury Nook",
-      "x": 40,
-      "y": 46,
-      "w": 5,
-      "h": 4
-    },
-    {
-      "id": "mirror_chamber",
-      "name": "Mirror Chamber",
-      "x": 22,
-      "y": 44,
-      "w": 4,
-      "h": 4
-    }
-  ],
-  "corridors": [
-    {
-      "from": "guard_station",
-      "to": "diwan_i_am",
-      "pathX": [
-        32,
-        28,
-        28
-      ],
-      "pathY": [
-        7,
-        9,
-        12
-      ]
-    },
-    {
-      "from": "akbari_mahal",
-      "to": "khwab_gah",
-      "pathX": [
-        16,
-        16
-      ],
-      "pathY": [
-        9,
-        12
-      ]
-    },
-    {
-      "from": "diwan_i_am",
-      "to": "tosha_khana",
-      "pathX": [
-        32,
-        36,
-        40
-      ],
-      "pathY": [
-        17,
-        17,
-        17
-      ]
-    },
-    {
-      "from": "pool_chambers",
-      "to": "hall_a",
-      "pathX": [
-        20
-      ],
-      "pathY": [
-        22
-      ]
-    },
-    {
-      "from": "hall_a",
-      "to": "hall_b",
-      "pathX": [
-        20,
-        20
-      ],
-      "pathY": [
-        26,
-        27
-      ]
-    },
-    {
-      "from": "khwar_gah",
-      "to": "arz_gan",
-      "pathX": [
-        6
-      ],
-      "pathY": [
-        29
-      ]
-    },
-    {
-      "from": "hall_b",
-      "to": "moti_masjid",
-      "pathX": [
-        22
-      ],
-      "pathY": [
-        31
-      ]
-    },
-    {
-      "from": "moti_masjid",
-      "to": "stables",
-      "pathX": [
-        26,
-        30,
-        32
-      ],
-      "pathY": [
-        33,
-        33,
-        33
-      ]
-    },
-    {
-      "from": "moti_masjid",
-      "to": "cook_houses",
-      "pathX": [
-        24
-      ],
-      "pathY": [
-        37
-      ]
-    },
-    {
-      "from": "khilat_khana",
-      "to": "garden",
-      "pathX": [
-        12,
-        16
-      ],
-      "pathY": [
-        39,
-        40
-      ]
-    },
-    {
-      "from": "garden",
-      "to": "shish_mahal",
-      "pathX": [
-        12
-      ],
-      "pathY": [
-        45
-      ]
-    },
-    {
-      "from": "shish_mahal",
-      "to": "hazuri_bagh",
-      "pathX": [
-        10,
-        10
-      ],
-      "pathY": [
-        51,
-        54
-      ]
-    },
-    {
-      "from": "hazuri_bagh",
-      "to": "ranjit_samadhi",
-      "pathX": [
-        21,
-        21
-      ],
-      "pathY": [
-        60,
-        62
-      ]
-    },
-    {
-      "from": "khwab_gah",
-      "to": "storage_cell",
-      "pathX": [
-        6,
-        4,
-        4
-      ],
-      "pathY": [
-        16,
-        16,
-        16
-      ]
-    },
-    {
-      "from": "diwan_i_am",
-      "to": "diamond_room",
-      "pathX": [
-        32,
-        34
-      ],
-      "pathY": [
-        14,
-        14
-      ]
-    },
-    {
-      "from": "hall_a",
-      "to": "armory",
-      "pathX": [
-        24,
-        28
-      ],
-      "pathY": [
-        24,
-        24
-      ]
-    },
-    {
-      "from": "tosha_khana",
-      "to": "prison_cell",
-      "pathX": [
-        44,
-        44
-      ],
-      "pathY": [
-        20,
-        24
-      ]
-    },
-    {
-      "from": "stables",
-      "to": "servants_quarters",
-      "pathX": [
-        34,
-        34
-      ],
-      "pathY": [
-        40,
-        40
-      ]
-    },
-    {
-      "from": "arz_gan",
-      "to": "well_room",
-      "pathX": [
-        4,
-        4
-      ],
-      "pathY": [
-        31,
-        42
-      ]
-    },
-    {
-      "from": "garden",
-      "to": "mirror_chamber",
-      "pathX": [
-        20,
-        22
-      ],
-      "pathY": [
-        42,
-        44
-      ]
-    },
-    {
-      "from": "garden",
-      "to": "treasury_nook",
-      "pathX": [
-        24,
-        40
-      ],
-      "pathY": [
-        44,
-        46
-      ]
+      "id": "puzzle_room",
+      "name": "Puzzle Room",
+      "x": 16,
+      "y": 37,
+      "w": 11,
+      "h": 8,
+      "guard": false
     }
   ],
   "doors": [
     {
       "id": "D1",
-      "x": 28,
-      "y": 8,
-      "orientation": "horizontal",
-      "locked": true,
-      "keyId": "K1",
-      "leadsFrom": "guard_station",
-      "leadsTo": "diwan_i_am"
+      "x": 7,
+      "y": 10,
+      "orientation": "vertical",
+      "locked": false,
+      "keyId": null,
+      "leadsFrom": "entry_hall",
+      "leadsTo": "guard_room"
     },
     {
       "id": "D2",
-      "x": 40,
-      "y": 17,
-      "orientation": "vertical",
-      "locked": true,
-      "keyId": "K2",
-      "leadsFrom": "diwan_i_am",
-      "leadsTo": "tosha_khana"
+      "x": 17,
+      "y": 16,
+      "orientation": "horizontal",
+      "locked": false,
+      "keyId": null,
+      "leadsFrom": "guard_room",
+      "leadsTo": "key_vault_a"
     },
     {
       "id": "D3",
-      "x": 16,
-      "y": 11,
-      "orientation": "horizontal",
+      "x": 7,
+      "y": 22,
+      "orientation": "vertical",
       "locked": true,
-      "keyId": "K3",
-      "leadsFrom": "akbari_mahal",
-      "leadsTo": "khwab_gah"
+      "keyId": "K1",
+      "leadsFrom": "guard_room",
+      "leadsTo": "locked_room"
     },
     {
       "id": "D4",
-      "x": 20,
-      "y": 21,
+      "x": 16,
+      "y": 29,
       "orientation": "horizontal",
-      "locked": true,
-      "keyId": "K4",
-      "leadsFrom": "pool_chambers",
-      "leadsTo": "hall_a"
+      "locked": false,
+      "keyId": null,
+      "leadsFrom": "locked_room",
+      "leadsTo": "hall_b"
     },
     {
       "id": "D5",
-      "x": 6,
+      "x": 28,
       "y": 29,
-      "orientation": "vertical",
-      "locked": true,
-      "keyId": "K5",
-      "leadsFrom": "arz_gan",
-      "leadsTo": "khwar_gah"
+      "orientation": "horizontal",
+      "locked": false,
+      "keyId": null,
+      "leadsFrom": "key_vault_b",
+      "leadsTo": "hall_b"
     },
     {
       "id": "D6",
-      "x": 22,
-      "y": 31,
-      "orientation": "horizontal",
-      "locked": true,
-      "keyId": "K6",
-      "leadsFrom": "hall_b",
-      "leadsTo": "moti_masjid"
-    },
-    {
-      "id": "D7",
-      "x": 30,
+      "x": 21,
       "y": 33,
       "orientation": "vertical",
       "locked": true,
-      "keyId": "K7",
-      "leadsFrom": "moti_masjid",
-      "leadsTo": "stables"
+      "keyId": "K2",
+      "leadsFrom": "hall_b",
+      "leadsTo": "puzzle_room"
     }
   ],
   "keys": [
     {
       "id": "K1",
-      "unlocks": "D1",
-      "room": "akbari_mahal",
-      "x": 10,
-      "y": 5
+      "unlocks": "D3",
+      "room": "key_vault_a",
+      "x": 20,
+      "y": 14
     },
     {
       "id": "K2",
-      "unlocks": "D2",
-      "room": "diwan_i_am",
-      "x": 26,
-      "y": 17
-    },
-    {
-      "id": "K3",
-      "unlocks": "D3",
-      "room": "akbari_mahal",
-      "x": 36,
-      "y": 13
-    },
-    {
-      "id": "K4",
-      "unlocks": "D4",
-      "room": "khwab_gah",
-      "x": 10,
-      "y": 16
-    },
-    {
-      "id": "K5",
-      "unlocks": "D5",
-      "room": "hall_b",
-      "x": 20,
-      "y": 29
-    },
-    {
-      "id": "K6",
       "unlocks": "D6",
-      "room": "khwar_gah",
-      "x": 9,
-      "y": 30
-    },
-    {
-      "id": "K7",
-      "unlocks": "D7",
-      "room": "moti_masjid",
-      "x": 22,
-      "y": 34
+      "room": "key_vault_b",
+      "x": 32,
+      "y": 29
     }
   ],
   "chests": [
     {
       "id": "C1",
-      "room": "khwab_gah",
-      "x": 11,
-      "y": 17,
-      "loot": "small_gold"
-    },
-    {
-      "id": "C2",
-      "room": "shish_mahal",
-      "x": 8,
-      "y": 48,
-      "loot": "small_gold"
-    },
-    {
-      "id": "C3",
-      "room": "ranjit_samadhi",
+      "room": "puzzle_room",
       "x": 21,
-      "y": 64,
+      "y": 43,
       "loot": "final_treasure",
       "requiresPuzzle": true
     }
@@ -635,384 +163,381 @@
   "guards": [
     {
       "id": "G1",
-      "room": "guard_station",
-      "x": 34,
-      "y": 3,
-      "patrolX": [
-        34,
-        34,
-        30,
-        30
-      ],
-      "patrolY": [
-        3,
-        6,
-        6,
-        3
+      "room": "guard_room",
+      "x": 7,
+      "y": 18,
+      "patrol": [
+        [
+          5,
+          16
+        ],
+        [
+          9,
+          16
+        ],
+        [
+          9,
+          20
+        ],
+        [
+          5,
+          20
+        ]
       ]
     },
     {
       "id": "G2",
-      "room": "stables",
-      "x": 36,
-      "y": 32,
-      "patrolX": [
-        36,
-        42,
-        42,
-        36
-      ],
-      "patrolY": [
-        32,
-        32,
-        38,
-        38
-      ]
-    },
-    {
-      "id": "G3",
-      "room": "diwan_i_am",
-      "x": 27,
-      "y": 15,
-      "patrolX": [
-        27,
-        30,
-        30,
-        27
-      ],
-      "patrolY": [
-        15,
-        15,
-        18,
-        18
-      ]
-    },
-    {
-      "id": "G4",
-      "room": "tosha_khana",
-      "x": 42,
-      "y": 12,
-      "patrolX": [
-        42,
-        46,
-        46,
-        42
-      ],
-      "patrolY": [
-        12,
-        12,
-        18,
-        18
-      ]
-    },
-    {
-      "id": "G5",
-      "room": "moti_masjid",
-      "x": 22,
-      "y": 34,
-      "patrolX": [
-        22,
-        25,
-        25,
-        22
-      ],
-      "patrolY": [
-        34,
-        34,
-        37,
-        37
-      ]
-    },
-    {
-      "id": "G6",
-      "room": "hazuri_bagh",
-      "x": 18,
-      "y": 58,
-      "patrolX": [
-        18,
-        24,
-        24,
-        18
-      ],
-      "patrolY": [
-        58,
-        58,
-        62,
-        62
+      "room": "hall_b",
+      "x": 21,
+      "y": 29,
+      "patrol": [
+        [
+          19,
+          28
+        ],
+        [
+          23,
+          28
+        ],
+        [
+          23,
+          31
+        ],
+        [
+          19,
+          31
+        ]
       ]
     }
   ],
   "puzzle": {
     "id": "P1",
-    "room": "ranjit_samadhi",
+    "room": "puzzle_room",
     "x": 21,
-    "y": 63,
+    "y": 40,
     "type": "tile_lock_sequence",
-    "unlocksChest": "C3"
+    "unlocksChest": "C1"
   },
   "decor_barrels": [
     {
-      "x": 34,
+      "x": 9,
+      "y": 5,
+      "room": "entry_hall"
+    },
+    {
+      "x": 5,
+      "y": 16,
+      "room": "guard_room"
+    },
+    {
+      "x": 5,
       "y": 30,
-      "room": "stables"
+      "room": "locked_room"
     },
     {
-      "x": 38,
-      "y": 35,
-      "room": "stables"
+      "x": 23,
+      "y": 30,
+      "room": "hall_b"
     },
     {
-      "x": 26,
-      "y": 38,
-      "room": "cook_houses"
+      "x": 18,
+      "y": 39,
+      "room": "puzzle_room"
+    },
+    {
+      "x": 24,
+      "y": 39,
+      "room": "puzzle_room"
     },
     {
       "x": 14,
-      "y": 43,
-      "room": "garden"
+      "y": 21,
+      "room": "corridor_east"
     },
     {
-      "x": 28,
-      "y": 9,
-      "room": "corridor"
-    },
-    {
-      "x": 20,
-      "y": 22,
-      "room": "pool"
-    },
-    {
-      "x": 16,
-      "y": 40,
-      "room": "garden"
-    },
-    {
-      "x": 12,
-      "y": 54,
-      "room": "hazuri"
-    },
-    {
-      "x": 40,
-      "y": 20,
-      "room": "tosha"
-    },
-    {
-      "x": 11,
-      "y": 18,
-      "room": "khwab_gah"
-    },
-    {
-      "x": 29,
-      "y": 25,
-      "room": "armory"
+      "x": 14,
+      "y": 36,
+      "room": "corridor_south"
     },
     {
       "x": 35,
-      "y": 57,
-      "room": "hazuri_bagh"
-    },
-    {
-      "x": 19,
-      "y": 53,
-      "room": "hazuri_bagh"
-    },
-    {
-      "x": 43,
-      "y": 48,
-      "room": "treasury_nook"
+      "y": 36,
+      "room": "corridor_far_east"
     }
   ],
   "exits": [
     {
-      "id": "hathi_paor_gate",
-      "x": 12,
-      "y": 51,
-      "leadsTo": "hazuri_bagh"
-    },
-    {
-      "id": "roshnai_gate",
-      "x": 8,
-      "y": 68,
-      "leadsTo": "outside_win"
-    },
-    {
-      "id": "gate_badshahi_masjid",
-      "x": 30,
-      "y": 73,
+      "id": "exit_gate",
+      "x": 21,
+      "y": 44,
       "leadsTo": "outside_win"
     }
   ],
-  "mazeWalls": [
+  "corridors": [
     {
-      "x1": 8,
-      "y1": 20,
-      "x2": 15,
-      "y2": 20,
-      "gapX": 12
+      "id": "main_maze",
+      "pathX": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        16,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        28,
+        27,
+        26,
+        21,
+        21,
+        21,
+        21,
+        21,
+        11,
+        11,
+        11,
+        11,
+        12,
+        13,
+        14,
+        14,
+        14,
+        14,
+        11,
+        11,
+        11,
+        11,
+        12,
+        13,
+        14,
+        14,
+        14,
+        14,
+        26,
+        26,
+        26,
+        26,
+        27,
+        28,
+        29,
+        29,
+        29,
+        29,
+        32,
+        32,
+        32,
+        32,
+        32,
+        33,
+        34,
+        35,
+        35,
+        35,
+        35,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        18,
+        19,
+        20,
+        22,
+        23,
+        24,
+        18,
+        18,
+        18,
+        24,
+        24,
+        24
+      ],
+      "pathY": [
+        11,
+        12,
+        13,
+        14,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        16,
+        22,
+        23,
+        24,
+        25,
+        26,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        33,
+        34,
+        35,
+        36,
+        37,
+        18,
+        19,
+        20,
+        21,
+        21,
+        21,
+        21,
+        20,
+        19,
+        18,
+        30,
+        31,
+        32,
+        33,
+        33,
+        33,
+        33,
+        34,
+        35,
+        36,
+        30,
+        31,
+        32,
+        33,
+        33,
+        33,
+        33,
+        34,
+        35,
+        36,
+        29,
+        30,
+        31,
+        32,
+        33,
+        33,
+        33,
+        33,
+        34,
+        35,
+        36,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        37,
+        38,
+        39,
+        37,
+        38,
+        39
+      ]
+    }
+  ],
+  "mazeBlocks": [
+    {
+      "x": 12,
+      "y": 19
     },
     {
-      "x1": 24,
-      "y1": 20,
-      "x2": 31,
-      "y2": 20,
-      "gapX": 27
+      "x": 13,
+      "y": 19
     },
     {
-      "x1": 34,
-      "y1": 32,
-      "x2": 44,
-      "y2": 32,
-      "gapX": 39
+      "x": 12,
+      "y": 30
     },
     {
-      "x1": 34,
-      "y1": 36,
-      "x2": 44,
-      "y2": 36,
-      "gapX": 41
+      "x": 13,
+      "y": 30
     },
     {
-      "x1": 10,
-      "y1": 56,
-      "x2": 28,
-      "y2": 56,
-      "gapX": 18
+      "x": 16,
+      "y": 21
     },
     {
-      "x1": 10,
-      "y1": 60,
-      "x2": 28,
-      "y2": 60,
-      "gapX": 22
+      "x": 17,
+      "y": 21
     },
     {
-      "x1": 42,
-      "y1": 8,
-      "x2": 42,
-      "y2": 22,
-      "gapX": 42,
-      "gapY": 14
+      "x": 16,
+      "y": 34
     },
     {
-      "x1": 18,
-      "y1": 14,
-      "x2": 18,
-      "y2": 20,
-      "gapX": 18,
-      "gapY": 17
+      "x": 17,
+      "y": 34
     },
     {
-      "x1": 8,
-      "y1": 16,
-      "x2": 14,
-      "y2": 16,
-      "gapX": 11
+      "x": 27,
+      "y": 31
     },
     {
-      "x1": 12,
-      "y1": 16,
-      "x2": 12,
-      "y2": 20,
-      "gapY": 18
+      "x": 28,
+      "y": 31
     },
     {
-      "x1": 26,
-      "y1": 24,
-      "x2": 32,
-      "y2": 24,
-      "gapX": 29
+      "x": 33,
+      "y": 34
     },
     {
-      "x1": 28,
-      "y1": 12,
-      "x2": 28,
-      "y2": 18,
-      "gapY": 15
+      "x": 34,
+      "y": 34
     },
     {
-      "x1": 36,
-      "y1": 28,
-      "x2": 44,
-      "y2": 28,
-      "gapX": 40
+      "x": 10,
+      "y": 18
     },
     {
-      "x1": 38,
-      "y1": 28,
-      "x2": 38,
-      "y2": 34,
-      "gapY": 31
+      "x": 10,
+      "y": 19
     },
     {
-      "x1": 20,
-      "y1": 46,
-      "x2": 20,
-      "y2": 52,
-      "gapY": 49
-    },
-    {
-      "x1": 14,
-      "y1": 52,
-      "x2": 22,
-      "y2": 52,
-      "gapX": 18
-    },
-    {
-      "x1": 14,
-      "y1": 52,
-      "x2": 14,
-      "y2": 58,
-      "gapY": 55
-    },
-    {
-      "x1": 16,
-      "y1": 58,
-      "x2": 26,
-      "y2": 58,
-      "gapX": 21
-    },
-    {
-      "x1": 26,
-      "y1": 58,
-      "x2": 26,
-      "y2": 64,
-      "gapY": 61
-    },
-    {
-      "x1": 18,
-      "y1": 64,
-      "x2": 28,
-      "y2": 64,
-      "gapX": 21,
-      "gapY": 21
-    },
-    {
-      "x1": 32,
-      "y1": 56,
-      "x2": 38,
-      "y2": 56,
-      "gapX": 35
-    },
-    {
-      "x1": 35,
-      "y1": 56,
-      "x2": 35,
-      "y2": 62,
-      "gapY": 59
-    },
-    {
-      "x1": 10,
-      "y1": 42,
-      "x2": 16,
-      "y2": 42,
-      "gapX": 13
-    },
-    {
-      "x1": 44,
-      "y1": 10,
-      "x2": 44,
-      "y2": 16,
-      "gapY": 13
+      "x": 10,
+      "y": 32
     }
   ]
 }
