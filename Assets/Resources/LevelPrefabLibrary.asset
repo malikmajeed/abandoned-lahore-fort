@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3921bc1eb6e148299f86ccb0c56db0b, type: 3}
+  m_Name: LevelPrefabLibrary
+  m_EditorClassIdentifier: Assembly-CSharp::ForgottenFort.Level.LevelPrefabLibrary
+  floorPrefab: {fileID: 3231171493554365691, guid: 4ab49d4614ea34c5ab659e350825c4de, type: 3}
+  wallPrefab: {fileID: 7287746587864260340, guid: f3eba813cd5ee4659b264d9e13bb3da5, type: 3}
+  playerPrefab: {fileID: 7384032209166690927, guid: c2220d4e50b4a4579a77e46ad6aaaac9, type: 3}
+  guardPrefab: {fileID: 4947841423163505605, guid: 72b605bc023cd4fbbba3c3869ce5d0a9, type: 3}
+  treasurePrefab: {fileID: 7931970232284324791, guid: af2e90d9fe6de4569947943a988ba0d5, type: 3}
+  keyPrefab: {fileID: 6771997397367257336, guid: 90bb3e723831f4d27aa72fcb81f72740, type: 3}
+  mosaicPrefab: {fileID: 8854964059035130686, guid: ac6105a2146434d36ac2173159e65572, type: 3}
+  doorPrefab: {fileID: 401690554851437982, guid: f42b82c390b6e43dba1ccde4a379a77c, type: 3}
+  doorOpenPrefab: {fileID: 8812345678901234567, guid: a8b7c6d5e4f32109876543210fedcba9, type: 3}
+  torchPrefab: {fileID: 7119639894090796550, guid: d3ca99485f23b4c25b07a47ba6ffa41e, type: 3}
+  barrelPrefab: {fileID: 7936678731040836615, guid: 8dc2491c191b443209f2a2d42511d791, type: 3}
