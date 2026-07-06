@@ -19,6 +19,7 @@ namespace ForgottenFort.Interactables
         void OnTriggerEnter2D(Collider2D other)
         {
             if (!other.GetComponent<Player.PlayerController>()) return;
+            SoundManager.Instance?.PlayKeyPickup();
             GameManager.Instance?.CollectKey(DisplayName);
             Destroy(gameObject);
         }

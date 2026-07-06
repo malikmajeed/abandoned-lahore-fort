@@ -94,6 +94,7 @@ namespace ForgottenFort.Core
         {
             if (State != GameState.Playing) return;
             State = GameState.Won;
+            SoundManager.Instance?.PlayWin();
             OnStateChanged?.Invoke();
             SceneManager.LoadScene("WinScreen");
         }
@@ -102,6 +103,7 @@ namespace ForgottenFort.Core
         {
             if (State != GameState.Playing) return;
             State = GameState.Lost;
+            SoundManager.Instance?.PlayCaught();
             PlayerPrefs.SetString("LoseReason", reason);
             OnStateChanged?.Invoke();
             SceneManager.LoadScene("LoseScreen");

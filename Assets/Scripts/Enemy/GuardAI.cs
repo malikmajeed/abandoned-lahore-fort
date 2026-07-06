@@ -67,7 +67,11 @@ namespace ForgottenFort.Enemy
         {
             if (GameManager.Instance != null && GameManager.Instance.State != GameState.Playing)
                 return;
-            if (player == null) return;
+            if (player == null)
+            {
+                player = FindFirstObjectByType<PlayerController>()?.transform;
+                if (player == null) return;
+            }
 
             if (hitCooldown > 0f)
                 hitCooldown -= Time.deltaTime;
@@ -134,9 +138,6 @@ namespace ForgottenFort.Enemy
                 return;
             }
 
-            if (dist <= GameConstants.GuardMinStandoff)
-                return;
-
             var pc = player.GetComponent<PlayerController>();
             bool playerSprinting = pc != null && pc.IsSprinting;
             float speed = GameConstants.GuardChaseSpeed;
@@ -161,13 +162,6 @@ namespace ForgottenFort.Enemy
 
         void MoveToward(Vector3 target, float speed, bool respectPlayerSpace = false)
         {
-            if (respectPlayerSpace && player != null)
-            {
-                float dist = Vector3.Distance(transform.position, player.position);
-                if (dist <= GameConstants.GuardMinStandoff)
-                    return;
-            }
-
             Vector3 dir = (target - transform.position).normalized;
             Vector3 newPos = transform.position + dir * speed * Time.deltaTime;
             var grid = FortLevelData.WorldToGrid(newPos);
@@ -179,6 +173,10 @@ namespace ForgottenFort.Enemy
             {
                 var playerGrid = FortLevelData.WorldToGrid(player.position);
                 if (grid == playerGrid)
+                    return;
+
+                float dist = Vector3.Distance(transform.position, player.position);
+                if (dist <= GameConstants.GuardMinStandoff && dist > GameConstants.GuardCatchDistance)
                     return;
             }
 
@@ -234,6 +232,7 @@ namespace ForgottenFort.Enemy
         {
             state = GuardState.Chase;
             lastChaseDistance = Vector3.Distance(transform.position, player.position);
+            SoundManager.Instance?.PlayGuardAlert();
             if (!usePrefabArt && chaseSprite != null)
                 spriteRenderer.sprite = chaseSprite;
         }
@@ -246,6 +245,7 @@ namespace ForgottenFort.Enemy
             if (playerController == null || playerController.IsInvulnerable) return;
 
             playerController.OnGuardHit(transform.position);
+            SoundManager.Instance?.PlayHurt();
             hitCooldown = GameConstants.PlayerInvulnerabilitySeconds + 0.75f;
 
             if (GameManager.Instance != null && GameManager.Instance.Health > 0)

@@ -27,6 +27,7 @@ namespace ForgottenFort.UI
 
         void OnPlay()
         {
+            SoundManager.Instance?.PlayMenuClick();
             if (instructionsPanel != null)
                 instructionsPanel.SetActive(false);
             GameManager.StartGame();
@@ -34,6 +35,7 @@ namespace ForgottenFort.UI
 
         void OnInstructions()
         {
+            SoundManager.Instance?.PlayMenuClick();
             if (instructionsPanel != null)
                 instructionsPanel.SetActive(true);
         }

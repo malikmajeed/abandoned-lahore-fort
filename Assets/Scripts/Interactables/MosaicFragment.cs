@@ -16,6 +16,7 @@ namespace ForgottenFort.Interactables
         void OnTriggerEnter2D(Collider2D other)
         {
             if (!other.GetComponent<Player.PlayerController>()) return;
+            SoundManager.Instance?.PlayPuzzleSolve();
             GameManager.Instance?.CollectMosaicFragment();
             GameManager.Instance?.SolvePuzzle();
             Destroy(gameObject);

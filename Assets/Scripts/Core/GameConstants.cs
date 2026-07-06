@@ -11,11 +11,11 @@ namespace ForgottenFort.Core
         public const int GuardHitDamage = 15;
         public const float PlayerInvulnerabilitySeconds = 1.25f;
         public const float GameTimeLimitSeconds = 600f;
-        public const float GuardViewDistance = 6f;
-        public const float GuardHearingDistance = 3.5f;
-        public const int GuardDetectionGridRadius = 4;
-        public const float GuardMinStandoff = 0.72f;
-        public const float GuardCatchDistance = 0.55f;
+        public const float GuardViewDistance = 3f;
+        public const float GuardHearingDistance = 2f;
+        public const int GuardDetectionGridRadius = 2;
+        public const float GuardMinStandoff = 0.85f;
+        public const float GuardCatchDistance = 1.05f;
         public const float GuardGiveUpDelay = 1.1f;
         public const float GuardSprintCatchPenalty = 0.45f;
         public const float GuardSearchDuration = 3f;

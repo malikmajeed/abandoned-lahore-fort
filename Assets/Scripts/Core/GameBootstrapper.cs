@@ -69,13 +69,12 @@ namespace ForgottenFort.Core
         void BuildGameplay()
         {
             EnsureEventSystem();
+            EnsureSoundManager();
 
             if (FindFirstObjectByType<GameManager>() == null)
             {
                 var gmGo = new GameObject("GameManager");
                 gmGo.AddComponent<GameManager>();
-                gmGo.AddComponent<AudioSource>();
-                gmGo.AddComponent<SoundManager>();
             }
 
             if (FindFirstObjectByType<LevelGenerator>() == null)
@@ -130,6 +129,7 @@ namespace ForgottenFort.Core
         {
             if (FindFirstObjectByType<MainMenuUI>() != null) return;
             EnsureEventSystem();
+            EnsureSoundManager();
 
             var canvasGo = new GameObject("Canvas");
             var canvas = canvasGo.AddComponent<Canvas>();
@@ -181,6 +181,14 @@ namespace ForgottenFort.Core
             end.isWinScreen = win;
             end.messageText = CreateUIText(canvasGo.transform, "Message", new Vector2(0, 80), "", 36, TextAnchor.MiddleCenter);
             end.mainMenuButton = CreateButton(canvasGo.transform, "MainMenu", new Vector2(0, -120), "MAIN MENU", () => GameManager.LoadMainMenu());
+        }
+
+        static void EnsureSoundManager()
+        {
+            if (SoundManager.Instance != null) return;
+            var go = new GameObject("SoundManager");
+            go.AddComponent<AudioSource>();
+            go.AddComponent<SoundManager>();
         }
 
         static void EnsureEventSystem()

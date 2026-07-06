@@ -15,6 +15,7 @@ namespace ForgottenFort.Interactables
         public bool IsLocked = true;
 
         SpriteRenderer sr;
+        float lockedSfxCooldown;
 
         void Awake()
         {
@@ -37,6 +38,12 @@ namespace ForgottenFort.Interactables
             UpdateVisual();
         }
 
+        void Update()
+        {
+            if (lockedSfxCooldown > 0f)
+                lockedSfxCooldown -= Time.deltaTime;
+        }
+
         void OnTriggerStay2D(Collider2D other)
         {
             if (other.GetComponent<Player.PlayerController>() != null)
@@ -46,10 +53,38 @@ namespace ForgottenFort.Interactables
         public void TryOpen()
         {
             if (!IsLocked) return;
-            if (GameManager.Instance == null || !GameManager.Instance.TryConsumeKeyForDoor())
+            if (GameManager.Instance == null)
+            {
+                PlayLockedFeedback();
                 return;
+            }
 
+            if (!GameManager.Instance.TryConsumeKeyForDoor())
+            {
+                PlayLockedFeedback();
+                return;
+            }
+
+            SoundManager.Instance?.PlayDoorOpen();
             OpenPassage();
+        }
+
+        void PlayLockedFeedback()
+        {
+            if (lockedSfxCooldown > 0f) return;
+            lockedSfxCooldown = 0.45f;
+            SoundManager.Instance?.PlayDoorLocked();
+            if (sr != null)
+                StartCoroutine(FlashLocked());
+        }
+
+        System.Collections.IEnumerator FlashLocked()
+        {
+            if (sr == null) yield break;
+            var original = sr.color;
+            sr.color = new Color(1f, 0.35f, 0.35f);
+            yield return new WaitForSeconds(0.12f);
+            sr.color = original;
         }
 
         void OpenPassage()
